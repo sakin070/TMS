@@ -1,0 +1,21 @@
+<form class="ui form" [formGroup]="registerForm">
+  <div class="ui segment">
+    <p><strong>Designation</strong></p>
+    <sui-select class="selection"  formControlName="designation" placeholder="Designation">
+      <sui-select-option value="Student"></sui-select-option>
+      <sui-select-option value="Professor"></sui-select-option>
+    </sui-select>
+  </div>
+
+  <div class="field">
+    <label>Email</label>
+    <input type="text" formControlName="email" placeholder="Email">
+  </div>
+
+  <div class="field">
+    <label>Password</label>
+    <input type="password" formControlName="password" placeholder="Password">
+  </div>
+
+  <button class="ui button" type="submit" (click)="tryLogin(registerForm.value)">Login</button>
+</form>
