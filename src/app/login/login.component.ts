@@ -17,6 +17,8 @@ export class LoginComponent implements OnInit {
     designation: new FormControl()
   });
   constructor(public authService: AuthService) { }
+  private errorMessage: string;
+  private successMessage: string;
 
   ngOnInit() {
   }
