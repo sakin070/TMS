@@ -1,14 +1,12 @@
 export class Course {
-    courseName: string;
-    courseId: string;
+    id: string;
     teamList : Array<string>;
     minimalNumberInTeam: number;
     maximalNumberInTeam: number;
     deadlineFormation: Date;
   
     constructor() {
-      this.courseName = '';
-      this.courseId = '';
+      this.id = '';
       this.teamList = [];
       this.deadlineFormation = new Date();
       this.minimalNumberInTeam = 0;

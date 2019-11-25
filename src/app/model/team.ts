@@ -1,4 +1,5 @@
 export class Team {
+    id: string;
     minimalNumber: number;
     maximalNumber: number;
     deadlineFormation: Date;
@@ -11,6 +12,7 @@ export class Team {
     pendingMemebers: Array<string>;
   
     constructor() {
+      this.id = '';
       this.minimalNumber = 0;
       this.maximalNumber = 0;
       this.deadlineFormation = new Date();
