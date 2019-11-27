@@ -1,11 +1,15 @@
-
 <form class="ui form" [formGroup]="registerForm">
   <div class="ui segment">
     <p><strong>Designation</strong></p>
-    <sui-select class="selection"  formControlName="designation" placeholder="Designation">
+    <sui-select class="selection" formControlName="designation" placeholder="Designation">
       <sui-select-option value="Student"></sui-select-option>
       <sui-select-option value="Professor"></sui-select-option>
     </sui-select>
+  </div>
+
+  <div class="field">
+    <label>Student or Professor Number</label>
+    <input type="text" formControlName="id" placeholder="Student/Professor Number">
   </div>
 
   <div class="two fields">
@@ -25,12 +29,17 @@
   </div>
 
   <div class="field">
+    <label>Program of Study</label>
+    <input type="text" formControlName="programOfStudy" placeholder="Program of Study">
+  </div>
+
+  <div class="field">
     <label>Password</label>
     <input type="password" formControlName="password" placeholder="Password">
   </div>
 
   <div class="field">
-      <sui-checkbox >I agree to the Terms and Conditions</sui-checkbox>
+    <sui-checkbox>I agree to the Terms and Conditions</sui-checkbox>
   </div>
   <button class="ui button" type="submit" (click)="tryRegister(registerForm.value)">Register</button>
 </form>
