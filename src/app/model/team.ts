@@ -2,9 +2,9 @@ export class Team {
     id: string;
     minimalNumber: number;
     maximalNumber: number;
-    deadlineFormation: Date;
+    deadlineFormation: string;
     studentThatIsLiasion: string;
-    dateOfCreation: Date;
+    dateOfCreation: string;
     isComplete: boolean;
     teamName: string;
     courseId: string;
@@ -15,9 +15,9 @@ export class Team {
       this.id = '';
       this.minimalNumber = 0;
       this.maximalNumber = 0;
-      this.deadlineFormation = new Date();
+      this.deadlineFormation = '';
       this.studentThatIsLiasion = '';
-      this.dateOfCreation = new Date();
+      this.dateOfCreation = '';
       this.isComplete = false;
       this.teamName = '';
       this.courseId = '';

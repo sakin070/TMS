@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { Professor } from '../model/professor';
+import * as uuid from 'uuid';
 
 @Injectable({
     providedIn: 'root'
@@ -15,8 +16,10 @@ export class ProfessorService {
 
     // Create Professor
     AddProfessor(professor: Professor) {
-        this.professorsRef.push({
-            id: professor.id,
+        const profId = uuid.v4();
+        this.professorRef = this.db.object('professors-list/'+ profId);
+        this.professorRef.set({
+            id: profId,
             firstName: professor.firstName,
             lastName: professor.lastName,
             email: professor.email,
@@ -37,7 +40,8 @@ export class ProfessorService {
     }
 
     // Update Professor
-    UpdateUser(professor: Professor) {
+    UpdateProffesor(professor: Professor) {
+        this.professorRef = this.db.object('professors-list/' + professor.id);
         this.professorRef.update({
             id: professor.id,
             firstName: professor.firstName,

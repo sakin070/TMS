@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { Team } from '../model/team';
+import * as uuid from 'uuid';
 
 @Injectable({
     providedIn: 'root'
@@ -15,8 +16,10 @@ export class TeamService {
 
     // Create Team
     AddTeam(team: Team) {
-        this.teamsRef.push({
-            id: team.id,
+        const teamId = uuid.v4();
+        this.teamRef = this.db.object('teams-list/'+ teamId);
+        this.teamRef.set({
+            id: teamId,
             minimalNumber: team.minimalNumber,
             maximalNumber: team.maximalNumber,
             deadlineFormation: team.deadlineFormation,
@@ -43,7 +46,8 @@ export class TeamService {
     }
 
     // Update Team
-    UpdateUser(team: Team) {
+    UpdateTeam(team: Team) {
+        this.teamRef = this.db.object('teams-list/' + team.id);
         this.teamRef.update({
             id: team.id,
             minimalNumber: team.minimalNumber,

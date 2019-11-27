@@ -15,7 +15,8 @@ export class CourseService {
 
     // Create Course
     AddCourse(course: Course) {
-        this.coursesRef.push({
+        this.courseRef = this.db.object('courses-list/'+ course.id);
+        this.courseRef.set({
             id: course.id,
             teamList: course.teamList,
             minimalNumberInTeam: course.minimalNumberInTeam,
@@ -38,6 +39,7 @@ export class CourseService {
 
     // Update Course
     UpdateUser(course: Course) {
+        this.courseRef = this.db.object('courses-list/'+ course.id);
         this.courseRef.update({
             id: course.id,
             teamList: course.teamList,
