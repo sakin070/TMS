@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { Student } from '../model/student';
 
-@Injectable({
-    providedIn: 'root'
-})
-
+@Injectable()
 export class StudentService {
 
     studentsRef: AngularFireList<any>;      // Reference to users list, Its an Observable
@@ -15,7 +12,8 @@ export class StudentService {
 
     // Create Student
     AddStudent(student: Student) {
-        this.studentsRef.push({
+        this.studentRef = this.db.object('students-list/'+ student.id);
+        this.studentRef.set({
             id: student.id,
             firstName: student.firstName,
             lastName: student.lastName,
@@ -38,7 +36,8 @@ export class StudentService {
     }
 
     // Update Student
-    UpdateUser(student: Student) {
+    UpdateStudent(student: Student) {
+        this.studentRef = this.db.object('students-list/' + student.id);
         this.studentRef.update({
             id: student.id,
             firstName: student.firstName,
