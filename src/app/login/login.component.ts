@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {AuthService} from '../auth.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
+import { StudentService } from '../services/student.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl(),
     designation: new FormControl()
   });
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService, private router: Router, private studentService: StudentService) { }
   private errorMessage: string;
   private successMessage: string;
 
@@ -29,6 +31,12 @@ export class LoginComponent implements OnInit {
         console.log(res);
         this.errorMessage = "";
         this.successMessage = "Your account has been created";
+        let id = this.authService.getCurrentUser().uid;
+        let user = this.studentService.GetStudent(id).valueChanges().subscribe(user => {
+          localStorage.setItem('user', JSON.stringify(user));
+          console.log(user);
+          this.router.navigateByUrl('/student')
+        });
       }, err => {
         console.log(err);
         this.errorMessage = err.message;

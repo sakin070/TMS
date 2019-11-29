@@ -1,0 +1,95 @@
+<div *ngIf="!course">
+  <div class="error-message">
+    <h2>
+      Oops... it looks like course {{currentCourseID}} has not been assigned for teams by the professor.
+    </h2>
+    <br>
+    <button class="ui  floated labeled icon button" (click)="goBack()">
+      View My Team
+      <i class="arrow left icon"></i>
+    </button>
+  </div>
+
+</div>
+
+
+<div *ngIf="course" class="ui segments">
+  <div class="ui segment">
+    <div>
+      <h1>
+        Course: {{currentCourseID}}
+      </h1>
+      <br>
+    </div>
+    <button *ngIf="teamList" class="ui left floated primary button" (click)="collapse = !collapse">
+      Show Available Teams
+    </button>
+
+    <button class="ui right floated labeled icon button" (click)="openProfileModal()">
+      Create Team
+      <i class="right plus icon"></i>
+    </button>
+    <button class="ui right floated labeled icon button">
+      View My Team
+      <i class="right edit icon"></i>
+    </button>
+  </div>
+  <br>
+  <br>
+  <div class="ui segment">
+    <div [suiCollapse]="collapse">
+      <li *ngFor="let team of teamList">
+        {{ team }}
+      </li>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!teamList" class="no-teams-to-join-message">
+  <h3>
+    Currently this course has no teams to join. You can create your own using the Create Team button in the top right
+    corner.
+  </h3>
+  <br>
+</div>
+
+
+
+<ng-template let-context let-modal="modal" #applicantModal>
+  <div class="content">
+
+    <div class="ui large header">
+      Create New Team
+      <span class="right floated">
+      </span>
+    </div>
+
+    <div class="ui clearing divider"></div>
+
+    <form class="ui form" [formGroup]="newTeamForm">
+      <div class="field">
+        <label>Team Name</label>
+        <input type="text" formControlName="teamName" placeholder="Your Team Name">
+      </div>
+
+      <div class="field">
+        <label>Memebers (Only valid student IDs will be added)</label>
+        <li *ngFor="let student of studentList_toAdd">
+          {{ student }}
+        </li>
+        <br>
+        <form class="ui form" [formGroup]="addMemberForm">
+          <input type="text" formControlName="memberID" placeholder="Please enter student ID" style="width: 40%;">
+          <button class="ui button primary" (click)="addTeamMember(addMemberForm.value)">Add Member</button>
+        </form>
+        <br>
+      </div>
+
+    </form>
+
+  </div>
+  <div class="actions">
+    <button class="ui red button" (click)="modal.deny()" autofocus>Close</button>
+    <button class="ui green button" (click)="modal.approve(newTeamForm.value)" autofocus>Create</button>
+  </div>
+</ng-template>

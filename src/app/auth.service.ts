@@ -1,19 +1,25 @@
 import { Injectable } from '@angular/core';
-import { AngularFireObject } from '@angular/fire/database';
+import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
-import { StudentService } from './services/student.service';
-import { ProfessorService } from './services/professor.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private studentService: StudentService, private professorService: ProfessorService) { }
+  constructor(private afAuth: AngularFireAuth, private router: Router) { }
+
+  getCurrentUser() {
+    let user = this.afAuth.auth.currentUser;
+    if (user){
+      return user;
+    }
+  }
 
   doRegister(value) {
     return new Promise<any>((resolve, reject) => {
-      firebase.auth().createUserWithEmailAndPassword(value.email, value.password)
+      this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password)
         .then(res => {
           console.log(value);
           resolve(res);
@@ -25,10 +31,12 @@ export class AuthService {
               lastName: value.lastName,
               email: value.email,
               programOfStudy: value.programOfStudy,
-              courseList: [],
+              courseList: value.courseList,
             })
               .then(save => {
                 resolve(save);
+                this.doLogin(value);
+                this.router.navigateByUrl('/student')
               },
                 err2 => reject(err2));
           } else {
@@ -37,10 +45,11 @@ export class AuthService {
               firstName: value.firstName,
               lastName: value.lastName,
               email: value.email,
-              courseList: [],
+              courseList: value.courseList,
             })
               .then(save => {
                 resolve(save);
+                this.doLogin(value);
               },
                 err2 => reject(err2));
           }
@@ -51,15 +60,14 @@ export class AuthService {
   doLogin(value) {
 
     return new Promise<any>((resolve, reject) => {
-      firebase.auth().signInWithEmailAndPassword(value.email, value.password).then(res => {
-
+      this.afAuth.auth.signInWithEmailAndPassword(value.email, value.password).then(res => {
         if (value.designation == "Student") {
           firebase.database().ref('students-list/' + res.user.uid).once('value').then(function (snapshot) {
             console.log(res);
             if (snapshot.val()) {
               console.log(snapshot.val());
               console.log(value);
-              resolve(res);
+              resolve(res);          
             }
           }, err => reject(err));
         } else {
@@ -75,5 +83,10 @@ export class AuthService {
       },
         err2 => reject(err2));
     });
+  }
+
+  logout() {
+    this.afAuth.auth.signOut();
+    localStorage.removeItem('user');
   }
 }
