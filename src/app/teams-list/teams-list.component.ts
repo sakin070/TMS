@@ -15,8 +15,10 @@ import { Team } from '../model/team';
 export class TeamsListComponent implements OnInit {
 
   currentCourseID = null;
+  course = new Course();
+  teamIDList = [];
   teamList = [];
-  course = null;
+  isTeamListEmpty = false;
   newCourse = new Course();
   studentList_toAdd = []
 
@@ -34,7 +36,6 @@ export class TeamsListComponent implements OnInit {
   constructor(private modalService: SuiModalService, private router: Router, private courseService: CourseService, private teamService: TeamService) { }
 
   ngOnInit() {
-
     this.currentCourseID = localStorage.getItem('currentCourseID');
 
     if (!this.currentCourseID) {
@@ -44,26 +45,29 @@ export class TeamsListComponent implements OnInit {
     this.courseService.GetCourse(this.currentCourseID).valueChanges().subscribe(course => {
       localStorage.setItem('currentCourse', JSON.stringify(course));
       this.course = course;
+      this.teamIDList = course.teamList;
       
-      if (!this.course.teamList) {
-        this.teamList = [];
-      } else {
-        this.teamList = this.course.teamList;
+      if (!this.teamIDList) {
+        this.teamIDList = [];
       }
-      
-      console.log(this.teamList)
+
+      if (Object.keys(this.teamIDList).length > 0) {
+        
+        for (let key of Object.keys(this.teamIDList)) {
+          this.teamService.GetTeam(this.teamIDList[key]).valueChanges().subscribe(team => {
+            console.log(team);
+            this.teamList.push(team);
+          });
+        }
+      } else {
+        this.isTeamListEmpty = true;
+      }
     });
 
   }
 
   goBack() {
     this.router.navigateByUrl('student');
-  }
-
-  isTeamListEmpty() {
-    console.log('length');
-    console.log(this.teamList.length);
-    return (this.teamList.length > 0);
   }
 
   // implement to cheque if member exists
@@ -78,7 +82,7 @@ export class TeamsListComponent implements OnInit {
 
     let newTeam = new Team();
     let currentUser = JSON.parse(localStorage.getItem('user'));
-  
+
     newTeam.teamName = value.teamName;
     newTeam.minimalNumber = this.course.minimalNumberInTeam;
     newTeam.maximalNumber = this.course.maximalNumberInTeam;
@@ -94,12 +98,11 @@ export class TeamsListComponent implements OnInit {
     // push team to firebase
     const teamId = this.teamService.AddTeam(newTeam);
 
-    if (!this.course.teamList) {
-      this.course.teamList= [];
-    }
+    console.log(teamId);
 
     // add new team to course team list
-    this.course.teamList.push(teamId);
+    this.teamIDList.push(teamId);
+    this.course.teamList = this.teamIDList;
 
     // push to firebase
     this.courseService.UpdateCourse(this.course);
@@ -119,6 +122,7 @@ export class TeamsListComponent implements OnInit {
       .open(config)
       .onApprove(value => {
         this.createNewTeam(value);
+        window.location.reload();
       })
       .onDeny(_ => { });
   }
