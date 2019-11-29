@@ -3,12 +3,12 @@ export class Course {
     teamList : Array<string>;
     minimalNumberInTeam: number;
     maximalNumberInTeam: number;
-    deadlineFormation: Date;
+    deadlineFormation: string;
   
     constructor() {
       this.id = '';
       this.teamList = [];
-      this.deadlineFormation = new Date();
+      this.deadlineFormation = "";
       this.minimalNumberInTeam = 0;
       this.maximalNumberInTeam = 0;
     }

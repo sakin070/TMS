@@ -1,0 +1,9 @@
+.error-message {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.no-teams-to-join-message {
+    margin-top: 100px;
+    text-align: center;
+}

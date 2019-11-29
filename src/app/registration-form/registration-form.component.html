@@ -33,6 +33,18 @@
     <input type="text" formControlName="programOfStudy" placeholder="Program of Study">
   </div>
 
+  <div class="field" style="background: rgb(204, 204, 204);">
+    <label>Courses</label>
+    <li *ngFor="let course of courseList">
+        {{ course }}
+      </li>
+    <form class="ui form" [formGroup]="courseForm">
+        <input type="text" formControlName="courseID" placeholder="Enter Course to Add " style="width: 15%;">
+        <button class="ui button primary" (click)="addCourse(courseForm.value)">Add Course</button>
+    </form>
+    <br>
+  </div>
+
   <div class="field">
     <label>Password</label>
     <input type="password" formControlName="password" placeholder="Password">

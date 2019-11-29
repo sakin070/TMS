@@ -38,7 +38,7 @@ export class CourseService {
     }
 
     // Update Course
-    UpdateUser(course: Course) {
+    UpdateCourse(course: Course) {
         this.courseRef = this.db.object('courses-list/'+ course.id);
         this.courseRef.update({
             id: course.id,

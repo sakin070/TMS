@@ -1,3 +1,13 @@
-<p>
-  student works!
-</p>
+<div *ngIf="!selectedCourse">
+  <h1 class="student-title">
+    Pick a course
+  </h1>
+
+  <div *ngFor="let course of courseList" (click)="onSelect(course)">
+    <button class="ui right labeled icon button course-button">
+      <i class="right arrow icon"></i>
+      {{course}}
+    </button>
+  </div>
+
+</div>

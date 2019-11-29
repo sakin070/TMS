@@ -31,6 +31,8 @@ export class TeamService {
             teamMembers: team.teamMembers,
             pendingMemebers: team.pendingMemebers,
         })
+
+        return teamId;
     }
 
     // Read Team
