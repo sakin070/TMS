@@ -19,6 +19,7 @@ import { TeamService } from './services/team.service';
 import { TeamsListComponent } from './teams-list/teams-list.component';
 import { ProfessorService } from './services/professor.service';
 import { CourseService } from './services/course.service';
+import { AuthGuard } from './services/auth.guard';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { CourseService } from './services/course.service';
     StudentService,
     TeamService,
     ProfessorService,
-    CourseService
+    CourseService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

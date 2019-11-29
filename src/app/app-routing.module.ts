@@ -4,12 +4,13 @@ import {RegistrationFormComponent} from './registration-form/registration-form.c
 import {LoginComponent} from './login/login.component';
 import { StudentComponent } from './student/student.component';
 import { TeamsListComponent } from './teams-list/teams-list.component';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   {path: 'register', component: RegistrationFormComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'student', component: StudentComponent},
-  {path: 'teams', component: TeamsListComponent},
+  {path: 'student', component: StudentComponent, canActivate: [AuthGuard]},
+  {path: 'teams', component: TeamsListComponent, canActivate: [AuthGuard]},
   ];
 
 @NgModule({
