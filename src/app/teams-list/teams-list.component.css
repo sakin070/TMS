@@ -7,3 +7,9 @@
     margin-top: 100px;
     text-align: center;
 }
+
+.go-back {
+    margin-top: 0px !important;
+    margin-bottom: 10px;
+    cursor: pointer;
+}

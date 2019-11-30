@@ -15,14 +15,23 @@
 
 <div *ngIf="course" class="ui segments">
   <div class="ui segment">
-    <div>
-      <h1>
-        Course: {{currentCourseID}}
-      </h1>
-      <br>
+    <div class="ui grid" style="margin-bottom: 10px;">
+      <div class="four column row">
+        <div class="left floated column">
+          <h1 style="margin-bottom: 0px;">
+            Course: {{currentCourseID}}
+          </h1>
+        </div>
+        <div class="right floated column">
+          <button class="ui black right floated button" (click)="logout()">
+            Logout
+          </button>
+        </div>
+      </div>
     </div>
-    <button *ngIf="teamIDList" class="ui left floated primary button" (click)="collapse = !collapse">
-      Show Available Teams
+    <button class="ui left floated primary button left labeled icon" (click)="goBack()">
+      <i class="arrow left icon"></i>
+      View other courses
     </button>
 
     <button class="ui right floated labeled icon button" (click)="openProfileModal()">
@@ -42,10 +51,12 @@
         <div class="ui grid">
           <div class="four column row">
             <div class="left floated column">
-              <span><h4 class="ui header">{{ team.teamName }}</h4> </span> <span>({{ team.teamMembers.length }}/{{ team.maximalNumber }})</span>
+              <span>
+                <h4 class="ui header">{{ team.teamName }}</h4>
+              </span> <span>({{ team.teamMembers.length }}/{{ team.maximalNumber }})</span>
             </div>
             <div class="right floated column">
-                <button class="ui right floated button">Join</button>
+              <button class="ui right floated button">Join</button>
             </div>
           </div>
         </div>
