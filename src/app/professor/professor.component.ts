@@ -6,6 +6,7 @@ import {ModalTemplate, SuiModalService, TemplateModalConfig} from 'ng2-semantic-
 import {Course} from '../model/course';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
+import {AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-professor',
@@ -16,13 +17,16 @@ export class ProfessorComponent implements OnInit {
 
   courseList = [];
   currentUser =  null;
-  constructor(private router: Router, private courseService: CourseService, private professorService: ProfessorService, private modalService: SuiModalService) { }
+  constructor(private authService: AuthService, private router: Router, private courseService: CourseService, private professorService: ProfessorService, private modalService: SuiModalService) { }
 
   @ViewChild('applicantModal')
   public applicantModal: ModalTemplate<{}, void, void>;
   newCourseForm  = new FormGroup(
     {
       courseId: new FormControl(),
+      minimalNumberInTeam: new FormControl(),
+      maximalNumberInTeam: new FormControl(),
+      deadlineFormation: new FormControl(),
     }
   );
 
@@ -32,10 +36,12 @@ export class ProfessorComponent implements OnInit {
 
   getCourses() {
     this.currentUser = JSON.parse(sessionStorage.getItem('user'));
+    console.log(this.currentUser)
     this.courseList = this.currentUser.courseList;
   }
 
   addCourse(value) {
+    console.log(value)
     let course = new Course();
     course.id = value.courseId;
     course.teamList = [];
@@ -43,7 +49,17 @@ export class ProfessorComponent implements OnInit {
     course.minimalNumberInTeam = value.minimalNumberInTeam;
     course.maximalNumberInTeam = value.maximalNumberInTeam;
     this.courseService.AddCourse(course);
-    this.courseList.concat(course.id);
+    this.currentUser.courseList.push(course.id);
+    this.courseList  = this.currentUser.courseList
+    sessionStorage.setItem('user', JSON.stringify(this.currentUser));
+    this.newCourseForm  = new FormGroup(
+      {
+        courseId: new FormControl(),
+        minimalNumberInTeam: new FormControl(),
+        maximalNumberInTeam: new FormControl(),
+        deadlineFormation: new FormControl(),
+      }
+    );
     const proff = {
       id: this.currentUser.id,
       firstName : this.currentUser.firstName,
@@ -51,7 +67,7 @@ export class ProfessorComponent implements OnInit {
       email: this.currentUser.email,
       courseList: this.courseList
     }
-    this.professorService.UpdateProffesor(proff);
+    this.professorService.UpdateProfessor(proff);
   }
 
   openProfileModal() {
@@ -68,7 +84,13 @@ export class ProfessorComponent implements OnInit {
       })
       .onDeny(_ => { });
   }
+
   courses(){
     this.router.navigateByUrl('courses');
+  }
+
+  logout(){
+    this.authService.logout();
+    this.router.navigateByUrl('login');
   }
 }
