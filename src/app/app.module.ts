@@ -22,6 +22,8 @@ import { CourseService } from './services/course.service';
 import { AuthGuard } from './services/auth.guard';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+import { ProfessorComponent } from './professor/professor.component';
+import { CourseListComponent } from './course-list/course-list.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import { HeaderComponent } from './header/header.component';
     TeamsListComponent,
     FooterComponent,
     HeaderComponent
+    ProfessorComponent,
+    CourseListComponent
   ],
   imports: [
     BrowserModule,

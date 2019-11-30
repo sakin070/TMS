@@ -24,7 +24,7 @@ export class ProfessorService {
             lastName: professor.lastName,
             email: professor.email,
             courseList: professor.courseList,
-        })
+        });
     }
 
     // Read Professor
