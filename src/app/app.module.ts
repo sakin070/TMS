@@ -19,6 +19,8 @@ import { TeamService } from './services/team.service';
 import { TeamsListComponent } from './teams-list/teams-list.component';
 import { ProfessorService } from './services/professor.service';
 import { CourseService } from './services/course.service';
+import { ProfessorComponent } from './professor/professor.component';
+import { CourseListComponent } from './course-list/course-list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { CourseService } from './services/course.service';
     RegistrationFormComponent,
     LoginComponent,
     StudentComponent,
-    TeamsListComponent
+    TeamsListComponent,
+    ProfessorComponent,
+    CourseListComponent
   ],
   imports: [
     BrowserModule,

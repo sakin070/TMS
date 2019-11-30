@@ -19,13 +19,13 @@ export class StudentComponent implements OnInit {
   }
 
   getCourses() {
-    this.currentUser = JSON.parse(localStorage.getItem('user'));
+    this.currentUser = JSON.parse(sessionStorage.getItem('user'));
     this.courseList = this.currentUser.courseList;
   }
 
   onSelect(course) {
     this.selectedCourse = course;
-    localStorage.setItem('currentCourseID', this.selectedCourse);
+    sessionStorage.setItem('currentCourseID', this.selectedCourse);
     this.router.navigateByUrl('teams');
   }
 
