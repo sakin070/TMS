@@ -1,11 +1,21 @@
+<div>
+  <h3> Welcome professor {{currentUser.firstName}}</h3>
+</div>
+
 <div class="ui segment" >
-  <button class="ui right floated labeled icon button" (click)="openProfileModal()">
+  <button class="ui left floated labeled icon button" (click)="courses()">
+    View My Courses
+    <i class="right edit icon"></i>
+  </button>
+
+  <button class="ui  floated labeled icon button" (click)="openProfileModal()">
     Set Up Team Parameters
     <i class="right plus icon"></i>
   </button>
-  <button class="ui right floated labeled icon button" (click)="courses()">
-    View My Courses
-    <i class="right edit icon"></i>
+
+  <button class="ui right floated labeled icon button" (click)="logout()">
+    Logout
+    <i class="right sign-in icon"></i>
   </button>
 </div>
 
@@ -28,17 +38,17 @@
 
       <div class="field">
         <label>Minimum Number In A Team</label>
-        <input type="text" formControlName="minimalNumberInTeam" placeholder="Min">
+        <input type="number" formControlName="minimalNumberInTeam" placeholder="Min">
       </div>
 
       <div class="field">
         <label>Maximum Number In A Team</label>
-        <input type="text" formControlName="maximalNumberInTeam" placeholder="Max">
+        <input type="number" formControlName="maximalNumberInTeam" placeholder="Max">
       </div>
 
       <div class="field">
         <label>Deadline For Team Formation</label>
-        <input type="text" formControlName="deadlineFormation" placeholder="Deadline">
+        <input type="date" formControlName="deadlineFormation" placeholder="Deadline">
       </div>
 
 

@@ -50,13 +50,13 @@ export class RegistrationFormComponent implements OnInit {
     this.authService.doRegister(value)
       .then(res => {
         console.log(res);
-        this.errorMessage = "";
-        this.successMessage = "Your account has been created";
-        localStorage.setItem('user', JSON.stringify(value));
+        this.errorMessage = '';
+        this.successMessage = 'Your account has been created';
+        sessionStorage.setItem('user', JSON.stringify(value));
       }, err => {
         console.log(err);
         this.errorMessage = err.message;
-        this.successMessage = "";
-      })
+        this.successMessage = '';
+      });
   }
 }

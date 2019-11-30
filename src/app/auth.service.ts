@@ -84,6 +84,7 @@ export class AuthService {
         err2 => reject(err2));
     });
   }
+
   logout() {
     this.afAuth.auth.signOut();
     this.router.navigateByUrl('/login');
