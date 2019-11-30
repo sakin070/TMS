@@ -22,6 +22,7 @@ export class TeamsListComponent implements OnInit {
   isTeamListEmpty = false;
   newCourse = new Course();
   studentList_toAdd = []
+  joinJobModalMessage = "";
 
   addMemberForm = new FormGroup({
     memberID: new FormControl()
@@ -31,14 +32,17 @@ export class TeamsListComponent implements OnInit {
     teamName: new FormControl(),
   });
 
-  @ViewChild('applicantModal')
-  public applicantModal: ModalTemplate<{}, void, void>;
+  @ViewChild('createJobModal')
+  public createJobModal: ModalTemplate<{}, void, void>;
 
-  constructor(private modalService: SuiModalService, 
-              private router: Router, 
-              private courseService: CourseService, 
-              private teamService: TeamService,
-              private authService: AuthService) { }
+  @ViewChild('alreadyPartOfTeamModal')
+  public alreadyPartOfTeamModal: ModalTemplate<{}, void, void>;
+
+  constructor(private modalService: SuiModalService,
+    private router: Router,
+    private courseService: CourseService,
+    private teamService: TeamService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.currentCourseID = localStorage.getItem('currentCourseID');
@@ -51,13 +55,13 @@ export class TeamsListComponent implements OnInit {
       localStorage.setItem('currentCourse', JSON.stringify(course));
       this.course = course;
       this.teamIDList = course.teamList;
-      
+
       if (!this.teamIDList) {
         this.teamIDList = [];
       }
 
       if (Object.keys(this.teamIDList).length > 0) {
-        
+
         for (let key of Object.keys(this.teamIDList)) {
           this.teamService.GetTeam(this.teamIDList[key]).valueChanges().subscribe(team => {
             console.log(team);
@@ -98,7 +102,7 @@ export class TeamsListComponent implements OnInit {
     newTeam.courseId = this.currentCourseID;
     newTeam.teamMembers = this.studentList_toAdd;
     newTeam.teamMembers.push(currentUser.id);
-    newTeam.pendingMemebers = [];
+    newTeam.pendingMembers = [];
 
     // push team to firebase
     const teamId = this.teamService.AddTeam(newTeam);
@@ -116,8 +120,85 @@ export class TeamsListComponent implements OnInit {
     localStorage.setItem('currentCourse', JSON.stringify(this.course));
   }
 
+  joinTeam(team) {
+
+    if (!team.isComplete) {
+      let currentUser = JSON.parse(localStorage.getItem('user'));
+
+      let alreadyJoined = "";
+      let closedModal = false;
+
+      this.teamService.GetTeamList().valueChanges().subscribe(teams => {
+        for (let key of Object.keys(teams)) {
+          if (teams[key].teamMembers.indexOf(currentUser.id) >= 0) {
+            alreadyJoined = teams[key];
+          }
+        }
+
+        if (!alreadyJoined) {
+          if (!team.pendingMembers) {
+            team.pendingMembers = [];
+          }
+
+          if (!team.pendingMembers.includes(currentUser.id) && currentUser.id != null && !closedModal) {
+            team.pendingMembers.push(currentUser.id);
+            this.teamService.UpdateTeam(team);
+            this.isTeamListEmpty = true;
+            this.openGenericModal("Your request to join the team has been sent.");
+            closedModal = true;
+          } else if (!closedModal) {
+            this.openGenericModal("You've already requested to join this team.");
+            closedModal = true;
+          }
+        } else if (alreadyJoined && !closedModal) {
+          this.openGenericModal("You're already part of a team.");
+          closedModal = true;
+        }
+      });
+    }
+  }
+
+  viewMyTeam() {
+    let currentUser = JSON.parse(localStorage.getItem('user'));
+    let currentUserTeam = null;
+    let closedModal = false;
+
+    this.teamService.GetTeamList().valueChanges().subscribe(teams => {
+      for (let key of Object.keys(teams)) {
+        if (teams[key].teamMembers.indexOf(currentUser.id) >= 0) {
+          currentUserTeam = teams[key];
+        }
+      }
+
+      if (currentUserTeam) {
+        console.log("my team found");
+      } else if (!closedModal) {
+        this.openGenericModal("You are not a member of any team!");
+        closedModal = true;
+      }
+    });
+
+  }
+
+  openGenericModal(msg) {
+    this.joinJobModalMessage = msg;
+
+    const config = new TemplateModalConfig<{}, void, void>(this.alreadyPartOfTeamModal);
+    config.isClosable = false;
+    config.size = 'mini';
+    config.transition = 'fade up';
+    config.transitionDuration = 400;
+
+    this.modalService
+      .open(config)
+      .onApprove(_ => {
+        window.location.reload();
+      })
+      .onDeny(_ => { });
+  }
+
   openProfileModal() {
-    const config = new TemplateModalConfig<{}, void, void>(this.applicantModal);
+    const config = new TemplateModalConfig<{}, void, void>(this.createJobModal);
     config.isClosable = false;
     config.size = 'small';
     config.transition = 'fade up';

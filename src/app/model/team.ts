@@ -9,7 +9,7 @@ export class Team {
     teamName: string;
     courseId: string;
     teamMembers: Array<string>;
-    pendingMemebers: Array<string>;
+    pendingMembers: Array<string>;
   
     constructor() {
       this.id = '';
@@ -22,6 +22,6 @@ export class Team {
       this.teamName = '';
       this.courseId = '';
       this.teamMembers = [];
-      this.pendingMemebers = [];
+      this.pendingMembers = [];
     }
   }

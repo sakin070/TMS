@@ -9,10 +9,7 @@
       <i class="arrow left icon"></i>
     </button>
   </div>
-
 </div>
-
-
 <div *ngIf="course" class="ui segments">
   <div class="ui segment">
     <div class="ui grid" style="margin-bottom: 10px;">
@@ -33,12 +30,11 @@
       <i class="arrow left icon"></i>
       View other courses
     </button>
-
     <button class="ui right floated labeled icon button" (click)="openProfileModal()">
       Create Team
       <i class="right plus icon"></i>
     </button>
-    <button class="ui right floated labeled icon button">
+    <button class="ui right floated labeled icon button" (click)="viewMyTeam()">
       View My Team
       <i class="right edit icon"></i>
     </button>
@@ -56,7 +52,7 @@
               </span> <span>({{ team.teamMembers.length }}/{{ team.maximalNumber }})</span>
             </div>
             <div class="right floated column">
-              <button class="ui right floated button">Join</button>
+              <button class="ui right floated button" (click)="joinTeam(team)">Request to Join</button>
             </div>
           </div>
         </div>
@@ -74,9 +70,7 @@
   <br>
 </div>
 
-
-
-<ng-template let-context let-modal="modal" #applicantModal>
+<ng-template let-context let-modal="modal" #createJobModal>
   <div class="content">
 
     <div class="ui large header">
@@ -84,9 +78,7 @@
       <span class="right floated">
       </span>
     </div>
-
     <div class="ui clearing divider"></div>
-
     <form class="ui form" [formGroup]="newTeamForm">
       <div class="field">
         <label>Team Name</label>
@@ -105,12 +97,19 @@
         </form>
         <br>
       </div>
-
     </form>
-
   </div>
   <div class="actions">
     <button class="ui red button" (click)="modal.deny()" autofocus>Close</button>
     <button class="ui green button" (click)="modal.approve(newTeamForm.value)" autofocus>Create</button>
+  </div>
+</ng-template>
+
+<ng-template let-context let-modal="modal" #alreadyPartOfTeamModal>
+  <div class="content">
+    {{joinJobModalMessage}}
+  </div>
+  <div class="actions">
+    <button class="ui red button" (click)="modal.approve()" autofocus>Close</button>
   </div>
 </ng-template>

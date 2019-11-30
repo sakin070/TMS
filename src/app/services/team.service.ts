@@ -17,7 +17,7 @@ export class TeamService {
     // Create Team
     AddTeam(team: Team) {
         const teamId = uuid.v4();
-        this.teamRef = this.db.object('teams-list/'+ teamId);
+        this.teamRef = this.db.object('teams-list/' + teamId);
         this.teamRef.set({
             id: teamId,
             minimalNumber: team.minimalNumber,
@@ -29,7 +29,7 @@ export class TeamService {
             teamName: team.teamName,
             courseId: team.courseId,
             teamMembers: team.teamMembers,
-            pendingMemebers: team.pendingMemebers,
+            pendingMembers: team.pendingMembers,
         })
 
         return teamId;
@@ -61,7 +61,7 @@ export class TeamService {
             teamName: team.teamName,
             courseId: team.courseId,
             teamMembers: team.teamMembers,
-            pendingMemebers: team.pendingMemebers,
+            pendingMembers: team.pendingMembers,
         })
     }
 
