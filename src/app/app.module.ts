@@ -33,9 +33,9 @@ import { HeaderComponent } from './header/header.component';
     StudentComponent,
     TeamsListComponent,
     ProfessorComponent,
-    CourseListComponent
+    CourseListComponent,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
