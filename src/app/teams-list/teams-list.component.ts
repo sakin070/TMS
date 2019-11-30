@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Course } from '../model/course';
 import { TeamService } from '../services/team.service';
 import { Team } from '../model/team';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-teams-list',
@@ -15,8 +16,10 @@ import { Team } from '../model/team';
 export class TeamsListComponent implements OnInit {
 
   currentCourseID = null;
+  course = new Course();
+  teamIDList = [];
   teamList = [];
-  course = null;
+  isTeamListEmpty = false;
   newCourse = new Course();
   studentList_toAdd = []
 
@@ -31,39 +34,46 @@ export class TeamsListComponent implements OnInit {
   @ViewChild('applicantModal')
   public applicantModal: ModalTemplate<{}, void, void>;
 
-  constructor(private modalService: SuiModalService, private router: Router, private courseService: CourseService, private teamService: TeamService) { }
+  constructor(private modalService: SuiModalService, 
+              private router: Router, 
+              private courseService: CourseService, 
+              private teamService: TeamService,
+              private authService: AuthService) { }
 
   ngOnInit() {
 
     this.currentCourseID = sessionStorage.getItem('currentCourseID');
 
     if (!this.currentCourseID) {
-      this.router.navigateByUrl('student'); // if no course is selected go back to student view
-    }
-
-    this.courseService.GetCourse(this.currentCourseID).valueChanges().subscribe(course => {
-      sessionStorage.setItem('currentCourse', JSON.stringify(course));
-      this.course = course;
-
-      if (!this.course.teamList) {
-        this.teamList = [];
-      } else {
-        this.teamList = this.course.teamList;
+        this.router.navigateByUrl('student'); // if no course is selected go back to student view
       }
 
-      console.log(this.teamList)
-    });
+      this.courseService.GetCourse(this.currentCourseID).valueChanges().subscribe(course => {
+        localStorage.setItem('currentCourse', JSON.stringify(course));
+        this.course = course;
+        this.teamIDList = course.teamList;
+
+        if (!this.teamIDList) {
+          this.teamIDList = [];
+        }
+
+        if (Object.keys(this.teamIDList).length > 0) {
+
+          for (let key of Object.keys(this.teamIDList)) {
+            this.teamService.GetTeam(this.teamIDList[key]).valueChanges().subscribe(team => {
+              console.log(team);
+              this.teamList.push(team);
+            });
+          }
+        } else {
+          this.isTeamListEmpty = true;
+        }
+      });
 
   }
 
   goBack() {
     this.router.navigateByUrl('student');
-  }
-
-  isTeamListEmpty() {
-    console.log('length');
-    console.log(this.teamList.length);
-    return (this.teamList.length > 0);
   }
 
   // implement to cheque if member exists
@@ -78,7 +88,6 @@ export class TeamsListComponent implements OnInit {
 
     let newTeam = new Team();
     let currentUser = JSON.parse(sessionStorage.getItem('user'));
-  
     newTeam.teamName = value.teamName;
     newTeam.minimalNumber = this.course.minimalNumberInTeam;
     newTeam.maximalNumber = this.course.maximalNumberInTeam;
@@ -94,12 +103,11 @@ export class TeamsListComponent implements OnInit {
     // push team to firebase
     const teamId = this.teamService.AddTeam(newTeam);
 
-    if (!this.course.teamList) {
-      this.course.teamList= [];
-    }
+    console.log(teamId);
 
     // add new team to course team list
-    this.course.teamList.push(teamId);
+    this.teamIDList.push(teamId);
+    this.course.teamList = this.teamIDList;
 
     // push to firebase
     this.courseService.UpdateCourse(this.course);
@@ -119,7 +127,12 @@ export class TeamsListComponent implements OnInit {
       .open(config)
       .onApprove(value => {
         this.createNewTeam(value);
+        window.location.reload();
       })
       .onDeny(_ => { });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

@@ -54,4 +54,8 @@ export class LoginComponent implements OnInit {
         this.successMessage = "";
       });
   }
+
+  registerAccount() {
+    this.router.navigateByUrl('/register')
+  }
 }
