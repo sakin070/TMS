@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { StudentService } from '../services/student.service';
+import {ProfessorService} from '../services/professor.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit {
     password: new FormControl(),
     designation: new FormControl()
   });
-  constructor(public authService: AuthService, private router: Router, private studentService: StudentService) { }
+  constructor(public authService: AuthService, private router: Router, private studentService: StudentService
+    , private professorService: ProfessorService) { }
   private errorMessage: string;
   private successMessage: string;
 
@@ -32,11 +34,20 @@ export class LoginComponent implements OnInit {
         this.errorMessage = "";
         this.successMessage = "Your account has been created";
         let id = this.authService.getCurrentUser().uid;
-        let user = this.studentService.GetStudent(id).valueChanges().subscribe(user => {
-          localStorage.setItem('user', JSON.stringify(user));
-          console.log(user);
-          this.router.navigateByUrl('/student')
-        });
+        if(value.designation === 'student'){
+          let user = this.studentService.GetStudent(id).valueChanges().subscribe(user => {
+            sessionStorage.setItem('user', JSON.stringify(user));
+            console.log(user);
+            this.router.navigateByUrl('/student')
+          });
+        }
+        else{
+          let user = this.professorService.GetProfessor(id).valueChanges().subscribe(user => {
+            sessionStorage.setItem('user', JSON.stringify(user));
+            console.log(user);
+            this.router.navigateByUrl('/professor')
+          });
+        }
       }, err => {
         console.log(err);
         this.errorMessage = err.message;

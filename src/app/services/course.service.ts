@@ -16,6 +16,7 @@ export class CourseService {
     // Create Course
     AddCourse(course: Course) {
         this.courseRef = this.db.object('courses-list/'+ course.id);
+        console.log(this.courseRef);
         this.courseRef.set({
             id: course.id,
             teamList: course.teamList,

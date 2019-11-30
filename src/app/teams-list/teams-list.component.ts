@@ -41,33 +41,34 @@ export class TeamsListComponent implements OnInit {
               private authService: AuthService) { }
 
   ngOnInit() {
-    this.currentCourseID = localStorage.getItem('currentCourseID');
+
+    this.currentCourseID = sessionStorage.getItem('currentCourseID');
 
     if (!this.currentCourseID) {
-      this.router.navigateByUrl('student'); // if no course is selected go back to student view
-    }
-
-    this.courseService.GetCourse(this.currentCourseID).valueChanges().subscribe(course => {
-      localStorage.setItem('currentCourse', JSON.stringify(course));
-      this.course = course;
-      this.teamIDList = course.teamList;
-      
-      if (!this.teamIDList) {
-        this.teamIDList = [];
+        this.router.navigateByUrl('student'); // if no course is selected go back to student view
       }
 
-      if (Object.keys(this.teamIDList).length > 0) {
-        
-        for (let key of Object.keys(this.teamIDList)) {
-          this.teamService.GetTeam(this.teamIDList[key]).valueChanges().subscribe(team => {
-            console.log(team);
-            this.teamList.push(team);
-          });
+      this.courseService.GetCourse(this.currentCourseID).valueChanges().subscribe(course => {
+        localStorage.setItem('currentCourse', JSON.stringify(course));
+        this.course = course;
+        this.teamIDList = course.teamList;
+
+        if (!this.teamIDList) {
+          this.teamIDList = [];
         }
-      } else {
-        this.isTeamListEmpty = true;
-      }
-    });
+
+        if (Object.keys(this.teamIDList).length > 0) {
+
+          for (let key of Object.keys(this.teamIDList)) {
+            this.teamService.GetTeam(this.teamIDList[key]).valueChanges().subscribe(team => {
+              console.log(team);
+              this.teamList.push(team);
+            });
+          }
+        } else {
+          this.isTeamListEmpty = true;
+        }
+      });
 
   }
 
@@ -86,14 +87,13 @@ export class TeamsListComponent implements OnInit {
   createNewTeam(value) {
 
     let newTeam = new Team();
-    let currentUser = JSON.parse(localStorage.getItem('user'));
-
+    let currentUser = JSON.parse(sessionStorage.getItem('user'));
     newTeam.teamName = value.teamName;
     newTeam.minimalNumber = this.course.minimalNumberInTeam;
     newTeam.maximalNumber = this.course.maximalNumberInTeam;
     newTeam.deadlineFormation = this.course.deadlineFormation;
     newTeam.dateOfCreation = new Date(Date.now()).toISOString();
-    newTeam.studentThatIsLiasion = JSON.parse(localStorage.getItem('user')).id;
+    newTeam.studentThatIsLiasion = JSON.parse(sessionStorage.getItem('user')).id;
     newTeam.isComplete = false; // create a function that takes in value and returns whether its complete or not
     newTeam.courseId = this.currentCourseID;
     newTeam.teamMembers = this.studentList_toAdd;
@@ -113,7 +113,7 @@ export class TeamsListComponent implements OnInit {
     this.courseService.UpdateCourse(this.course);
 
     //update local storage
-    localStorage.setItem('currentCourse', JSON.stringify(this.course));
+    sessionStorage.setItem('currentCourse', JSON.stringify(this.course));
   }
 
   openProfileModal() {

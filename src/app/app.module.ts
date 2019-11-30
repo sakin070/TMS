@@ -19,6 +19,8 @@ import { TeamService } from './services/team.service';
 import { TeamsListComponent } from './teams-list/teams-list.component';
 import { ProfessorService } from './services/professor.service';
 import { CourseService } from './services/course.service';
+import { ProfessorComponent } from './professor/professor.component';
+import { CourseListComponent } from './course-list/course-list.component';
 import { AuthGuard } from './services/auth.guard';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
@@ -30,6 +32,8 @@ import { HeaderComponent } from './header/header.component';
     LoginComponent,
     StudentComponent,
     TeamsListComponent,
+    ProfessorComponent,
+    CourseListComponent
     FooterComponent,
     HeaderComponent
   ],
