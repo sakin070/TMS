@@ -1,0 +1,30 @@
+<div  class="row">
+  <div class="col">
+
+    <h1 class="student-title">
+      Pick a course
+    </h1>
+
+    <div *ngFor="let course of courseList" (click)="getTeams(course)">
+      <button class="ui right labeled icon button course-button">
+        <i class="right arrow icon"></i>
+        {{course}}
+      </button>
+    </div>
+
+  </div>
+
+  <div class="col">
+    <div *ngIf="teamList.length>0">
+      <div *ngFor="let team of teamList" >
+        <button class="ui right labeled icon button course-button">
+          <i class="right arrow icon"></i>
+          {{team}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
