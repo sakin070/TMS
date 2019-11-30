@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Course } from '../model/course';
 import { TeamService } from '../services/team.service';
 import { Team } from '../model/team';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-teams-list',
@@ -33,7 +34,11 @@ export class TeamsListComponent implements OnInit {
   @ViewChild('applicantModal')
   public applicantModal: ModalTemplate<{}, void, void>;
 
-  constructor(private modalService: SuiModalService, private router: Router, private courseService: CourseService, private teamService: TeamService) { }
+  constructor(private modalService: SuiModalService, 
+              private router: Router, 
+              private courseService: CourseService, 
+              private teamService: TeamService,
+              private authService: AuthService) { }
 
   ngOnInit() {
     this.currentCourseID = localStorage.getItem('currentCourseID');
@@ -125,5 +130,9 @@ export class TeamsListComponent implements OnInit {
         window.location.reload();
       })
       .onDeny(_ => { });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

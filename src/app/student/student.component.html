@@ -1,13 +1,38 @@
-<div *ngIf="!selectedCourse">
-  <h1 class="student-title">
-    Pick a course
-  </h1>
+<div style="margin-bottom: 0px;" class="ui segment">
 
-  <div *ngFor="let course of courseList" (click)="onSelect(course)">
-    <button class="ui right labeled icon button course-button">
-      <i class="right arrow icon"></i>
-      {{course}}
-    </button>
+  <div class="ui grid">
+    <div class="four column row">
+      <div class="left floated column">
+        <h1 style="margin-bottom: 0px;">
+          Your Courses
+        </h1>
+      </div>
+      <div class="right floated column">
+        <button class="ui black right floated button" (click)="logout()">
+          Logout
+        </button>
+      </div>
+    </div>
   </div>
 
-</div>
+
+  <br>
+  <br>
+  <div class="ui segment" style="margin-top: 0px;">
+    <div [suiCollapse]="collapse">
+      <div *ngFor="let course of courseList" class="ui segment" (click)="onSelect(course)">
+        <div class="ui grid">
+          <div class="four column row">
+            <div class="left floated column">
+              <h3 class="ui header">Course ID: {{ course }}</h3>
+            </div>
+            <div class="right floated column">
+              <button class="ui right floated button right labeled icon">
+                <i class="right arrow icon"></i>View
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

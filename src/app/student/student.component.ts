@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
  
 @Component({
   selector: 'app-student',
@@ -12,7 +13,7 @@ export class StudentComponent implements OnInit {
   courseList = [];
   selectedCourse = null;
   
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
     this.getCourses();
@@ -29,6 +30,8 @@ export class StudentComponent implements OnInit {
     this.router.navigateByUrl('teams');
   }
 
-
+  logout() {
+    this.authService.logout();
+  }
 
 }
