@@ -1,0 +1,24 @@
+
+
+
+
+
+<div class="ui grid">
+  <div class="four column row">
+    <div class="left floated column">
+      BACK
+    </div>
+    <div class="right floated column" style="float: right">
+        <div class="ui simple dropdown link item"  suiDropdown>
+            <span class="text">
+              <h3><b>Account</b></h3>
+            </span>
+            <i class="dropdown icon black"></i>
+            <div class="menu" suiDropdownMenu>
+              <div class="item">{{currentUser.firstName}} {{currentUser.lastName}}</div>
+              <div class="item" (click)="logout()" style="color: #e24f4f !important;">Sign out</div>
+            </div>
+          </div>
+    </div>
+  </div>
+</div>

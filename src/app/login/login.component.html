@@ -1,4 +1,4 @@
-<form class="ui form" [formGroup]="registerForm">
+<!-- <form class="ui form" [formGroup]="registerForm">
   <div class="ui segment">
     <p><strong>Designation</strong></p>
     <sui-select class="selection"  formControlName="designation" placeholder="Designation">
@@ -18,4 +18,35 @@
   </div>
 
   <button class="ui button" type="submit" (click)="tryLogin(registerForm.value)">Login</button>
-</form>
+</form> -->
+
+
+
+<div class="ui container" id="container-log-in">
+  <h1 style="text-align: center;">TMS</h1>
+  <div class="ui basic segment">
+    <div class="content">
+      <form class="ui form" [formGroup]="registerForm">
+        <div class="ui left icon input fluid">
+          <input type="email" formControlName="email" placeholder="Email address" name="email">
+          <i class="user icon"></i>
+        </div>
+        <div class="ui left icon input fluid" id="input-login">
+          <input type="password" formControlName="password" placeholder="Password" name="password">
+          <i class="lock icon"></i>
+        </div>
+        <sui-select class="selection input fluid" id="input-login" formControlName="designation" placeholder="Designation">
+          <sui-select-option value="Student"></sui-select-option>
+          <sui-select-option value="Professor"></sui-select-option>
+        </sui-select>
+        <button type="submit" (click)="tryLogin(registerForm.value)" class="ui fluid button instagram button-login">Login</button>
+      </form>
+      <div class="ui horizontal divider">
+        Or
+      </div>
+    </div>
+    <button type="button" class="ui fluid black button" (click)="registerAccount()" id="log-in-service">
+      Register Account
+    </button>
+  </div>
+</div>
