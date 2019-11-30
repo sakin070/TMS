@@ -23,6 +23,8 @@ export class TeamsListComponent implements OnInit {
   newCourse = new Course();
   studentList_toAdd = []
   joinJobModalMessage = "";
+  currentUserTeam = null;
+  currentUserIsLiaison = false;
 
   addMemberForm = new FormGroup({
     memberID: new FormControl()
@@ -35,8 +37,11 @@ export class TeamsListComponent implements OnInit {
   @ViewChild('createJobModal')
   public createJobModal: ModalTemplate<{}, void, void>;
 
-  @ViewChild('alreadyPartOfTeamModal')
-  public alreadyPartOfTeamModal: ModalTemplate<{}, void, void>;
+  @ViewChild('genericModal')
+  public genericModal: ModalTemplate<{}, void, void>;
+
+  @ViewChild('viewTeamModal')
+  public viewTeamModal: ModalTemplate<{}, void, void>;
 
   constructor(private modalService: SuiModalService,
     private router: Router,
@@ -72,6 +77,8 @@ export class TeamsListComponent implements OnInit {
         this.isTeamListEmpty = true;
       }
     });
+
+    this.viewMyTeam();
 
   }
 
@@ -124,14 +131,13 @@ export class TeamsListComponent implements OnInit {
 
     if (!team.isComplete) {
       let currentUser = JSON.parse(localStorage.getItem('user'));
-
-      let alreadyJoined = "";
+      let alreadyJoined = false;
       let closedModal = false;
 
       this.teamService.GetTeamList().valueChanges().subscribe(teams => {
         for (let key of Object.keys(teams)) {
           if (teams[key].teamMembers.indexOf(currentUser.id) >= 0) {
-            alreadyJoined = teams[key];
+            alreadyJoined = true;
           }
         }
 
@@ -160,18 +166,25 @@ export class TeamsListComponent implements OnInit {
 
   viewMyTeam() {
     let currentUser = JSON.parse(localStorage.getItem('user'));
-    let currentUserTeam = null;
+    this.currentUserTeam = null;
     let closedModal = false;
+    this.currentUserIsLiaison = false;
 
     this.teamService.GetTeamList().valueChanges().subscribe(teams => {
       for (let key of Object.keys(teams)) {
         if (teams[key].teamMembers.indexOf(currentUser.id) >= 0) {
-          currentUserTeam = teams[key];
+          this.currentUserTeam = teams[key];
         }
       }
 
-      if (currentUserTeam) {
-        console.log("my team found");
+      if (this.currentUserTeam && !closedModal) {
+        
+        if (this.currentUserTeam.studentThatIsLiasion == currentUser.id) {
+          this.currentUserIsLiaison = true;
+        }
+
+        this.openViewTeamModal();
+        closedModal = true;
       } else if (!closedModal) {
         this.openGenericModal("You are not a member of any team!");
         closedModal = true;
@@ -180,10 +193,25 @@ export class TeamsListComponent implements OnInit {
 
   }
 
+  openViewTeamModal() {
+    const config = new TemplateModalConfig<{}, void, void>(this.viewTeamModal);
+    config.isClosable = false;
+    config.size = 'small';
+    config.transition = 'fade up';
+    config.transitionDuration = 400;
+
+    this.modalService
+      .open(config)
+      .onApprove(_ => {
+        window.location.reload();
+      })
+      .onDeny(_ => { });
+  }
+
   openGenericModal(msg) {
     this.joinJobModalMessage = msg;
 
-    const config = new TemplateModalConfig<{}, void, void>(this.alreadyPartOfTeamModal);
+    const config = new TemplateModalConfig<{}, void, void>(this.genericModal);
     config.isClosable = false;
     config.size = 'mini';
     config.transition = 'fade up';
