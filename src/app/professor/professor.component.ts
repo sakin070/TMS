@@ -37,7 +37,9 @@ export class ProfessorComponent implements OnInit {
   getCourses() {
     this.currentUser = JSON.parse(sessionStorage.getItem('user'));
     console.log(this.currentUser)
-    this.courseList = this.currentUser.courseList;
+    if(this.currentUser){
+      this.courseList = this.currentUser.courseList;
+    }
   }
 
   addCourse(value) {
@@ -91,6 +93,11 @@ export class ProfessorComponent implements OnInit {
 
   logout(){
     this.authService.logout();
+    this.router.navigateByUrl('login');
+  }
+
+  routeToLogin(){
+    // this.authService.logout();
     this.router.navigateByUrl('login');
   }
 }
