@@ -1,0 +1,53 @@
+<div class="ui segment" >
+  <button class="ui right floated labeled icon button" (click)="openProfileModal()">
+    Set Up Team Parameters
+    <i class="right plus icon"></i>
+  </button>
+  <button class="ui right floated labeled icon button" (click)="courses()">
+    View My Courses
+    <i class="right edit icon"></i>
+  </button>
+</div>
+
+
+<ng-template let-context let-modal="modal" #applicantModal>
+  <div class="content">
+
+    <div class="ui large header">
+      Set up parameters for Teams
+      <span class="right floated">
+      </span>
+    </div>
+    <div class="ui clearing divider"></div>
+
+    <form class="ui form" [formGroup]="newCourseForm">
+      <div class="field">
+        <label>Course Id</label>
+        <input type="text" formControlName="courseId" placeholder="Course id">
+      </div>
+
+      <div class="field">
+        <label>Minimum Number In A Team</label>
+        <input type="text" formControlName="minimalNumberInTeam" placeholder="Min">
+      </div>
+
+      <div class="field">
+        <label>Maximum Number In A Team</label>
+        <input type="text" formControlName="maximalNumberInTeam" placeholder="Max">
+      </div>
+
+      <div class="field">
+        <label>Deadline For Team Formation</label>
+        <input type="text" formControlName="deadlineFormation" placeholder="Deadline">
+      </div>
+
+
+
+    </form>
+
+  </div>
+  <div class="actions">
+    <button class="ui red button" (click)="modal.deny()" autofocus>Close</button>
+    <button class="ui green button" (click)="modal.approve(newCourseForm.value)" autofocus>Add</button>
+  </div>
+</ng-template>
