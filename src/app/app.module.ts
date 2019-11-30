@@ -20,6 +20,8 @@ import { TeamsListComponent } from './teams-list/teams-list.component';
 import { ProfessorService } from './services/professor.service';
 import { CourseService } from './services/course.service';
 import { AuthGuard } from './services/auth.guard';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { AuthGuard } from './services/auth.guard';
     RegistrationFormComponent,
     LoginComponent,
     StudentComponent,
-    TeamsListComponent
+    TeamsListComponent,
+    FooterComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
