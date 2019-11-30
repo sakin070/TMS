@@ -33,7 +33,7 @@ import { CourseListComponent } from './course-list/course-list.component';
     StudentComponent,
     TeamsListComponent,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
     ProfessorComponent,
     CourseListComponent
   ],
