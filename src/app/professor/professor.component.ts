@@ -36,14 +36,12 @@ export class ProfessorComponent implements OnInit {
 
   getCourses() {
     this.currentUser = JSON.parse(sessionStorage.getItem('user'));
-    console.log(this.currentUser)
     if(this.currentUser){
       this.courseList = this.currentUser.courseList;
     }
   }
 
   addCourse(value) {
-    console.log(value)
     let course = new Course();
     course.id = value.courseId;
     course.teamList = [];
@@ -56,7 +54,10 @@ export class ProfessorComponent implements OnInit {
       this.currentUser.courseList = [];
     }
     
-    this.currentUser.courseList.push(course.id);
+    if (!this.currentUser.courseList.includes(course.id)) {
+      this.currentUser.courseList.push(course.id);
+    }
+    
     this.courseList  = this.currentUser.courseList
     sessionStorage.setItem('user', JSON.stringify(this.currentUser));
     this.newCourseForm  = new FormGroup(

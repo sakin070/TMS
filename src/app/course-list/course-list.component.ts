@@ -4,6 +4,7 @@ import {CourseService} from '../services/course.service';
 import {Router} from '@angular/router';
 import {ModalTemplate, SuiModalService, TemplateModalConfig} from 'ng2-semantic-ui';
 import { AuthService } from '../auth.service';
+import { Team } from '../model/team';
 
 @Component({
   selector: 'app-course-list',
@@ -14,9 +15,13 @@ export class CourseListComponent implements OnInit {
   currentUser = null;
   courseList = null;
   teamList = [];
+  currentTeam = null;
 
   @ViewChild('applicantModal')
   public applicantModal: ModalTemplate<{}, void, void>;
+
+  @ViewChild('viewTeamModal')
+  public viewTeamModal: ModalTemplate<{}, void, void>;
 
   constructor(private modalService: SuiModalService, 
               private courseService:CourseService, 
@@ -27,7 +32,6 @@ export class CourseListComponent implements OnInit {
   ngOnInit() {
     this.currentUser = JSON.parse(sessionStorage.getItem('user'));
     this.courseList = this.currentUser.courseList;
-    console.log(this.courseList)
   }
 
   getTeams(course) {
@@ -35,10 +39,10 @@ export class CourseListComponent implements OnInit {
     this.teamList = [];
     this.courseService.GetCourse(course).valueChanges().forEach(team => {
       team.teamList.forEach(teamId => {
-        this.teamService.GetTeam(teamId).valueChanges().forEach(teamInfo => {
-          this.teamList.push(teamInfo.teamName)
+        this.teamService.GetTeam(teamId).valueChanges().forEach(teamInfo => {      
+          this.teamList.push(teamInfo);
         })
-      })
+      })      
     });
 
     const config = new TemplateModalConfig<{}, void, void>(this.applicantModal);
@@ -51,6 +55,22 @@ export class CourseListComponent implements OnInit {
       .open(config)
       .onDeny(_ => { });
   }
+
+  openViewTeamModal(team) {
+    this.currentTeam = team;
+    const config = new TemplateModalConfig<{}, void, void>(this.viewTeamModal);
+    config.isClosable = false;
+    config.size = 'small';
+    config.transition = 'fade up';
+    config.transitionDuration = 400;
+
+    this.modalService
+      .open(config)
+      .onApprove(_ => {
+      })
+      .onDeny(_ => { });
+  }
+
 
   back() {
     this.router.navigateByUrl("/professor")

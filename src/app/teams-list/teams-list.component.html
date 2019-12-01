@@ -86,7 +86,7 @@
       </div>
 
       <div class="field">
-        <label>Memebers (Only valid student IDs will be added)</label>
+        <label>Memebers (please enter student IDs)</label>
         <li *ngFor="let student of studentList_toAdd">
           {{ student }}
         </li>
@@ -128,7 +128,7 @@
 
     <div class="ui medium header">Team Info </div>
 
-    <div class="ui small header">Student liaison by student number:</div>
+    <div class="ui small header">Student liaison:</div>
     <div>
       {{currentUserTeam.studentThatIsLiasion}}
     </div>
@@ -138,7 +138,7 @@
       {{currentUserTeam.dateOfCreation}}
     </div>
 
-    <div class="ui small header">Team members by student number:
+    <div class="ui small header">Team members:
       ({{ currentUserTeam.teamMembers.length }}/{{ currentUserTeam.maximalNumber }})</div>
     <div>
       <li *ngFor="let student of currentUserTeam.teamMembers">
@@ -150,8 +150,7 @@
     <div *ngIf="currentUserIsLiaison">
       <div class="ui clearing divider"></div>
 
-      <div class="ui medium header">Requests to join
-        ({{ currentUserTeam.pendingMembers.length }})</div>
+      <div class="ui medium header">Requests to join</div>
       <div>
         <li *ngFor="let student of currentUserTeam.pendingMembers">
           {{ student }} 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CourseService } from '../services/course.service';
 import { SuiModalService, ModalTemplate, TemplateModalConfig } from 'ng2-semantic-ui';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Course } from '../model/course';
 import { TeamService } from '../services/team.service';
@@ -69,7 +69,6 @@ export class TeamsListComponent implements OnInit {
 
         for (let key of Object.keys(this.teamIDList)) {
           this.teamService.GetTeam(this.teamIDList[key]).valueChanges().subscribe(team => {
-            console.log(team);
             this.teamList.push(team);
           });
         }
@@ -77,8 +76,6 @@ export class TeamsListComponent implements OnInit {
         this.isTeamListEmpty = true;
       }
     });
-
-    //this.viewMyTeam();
 
   }
 
@@ -113,8 +110,6 @@ export class TeamsListComponent implements OnInit {
 
     // push team to firebase
     const teamId = this.teamService.AddTeam(newTeam);
-
-    console.log(teamId);
 
     // add new team to course team list
     this.teamIDList.push(teamId);
@@ -152,7 +147,7 @@ export class TeamsListComponent implements OnInit {
             this.isTeamListEmpty = true;
             this.openGenericModal("Your request to join the team has been sent.");
             closedModal = true;
-          } else if (!closedModal) {
+          } else if (!closedModal && team.pendingMembers.includes(currentUser.id)) {
             this.openGenericModal("You've already requested to join this team.");
             closedModal = true;
           }
@@ -194,9 +189,13 @@ export class TeamsListComponent implements OnInit {
   }
 
   acceptStudentToTeam(student) {
-    this.currentUserTeam.teamMembers.push(student);
-    this.currentUserTeam.pendingMembers.splice(this.currentUserTeam.pendingMembers.indexOf(student), 1);
-    this.teamService.UpdateTeam(this.currentUserTeam);
+    if (this.currentUserTeam.teamMembers.length + 1 <= this.currentUserTeam.maximalNumber) {
+      this.currentUserTeam.teamMembers.push(student);
+      this.currentUserTeam.pendingMembers.splice(this.currentUserTeam.pendingMembers.indexOf(student), 1);
+      this.teamService.UpdateTeam(this.currentUserTeam);
+    } else {
+      this.openGenericModal("You can't add anymore members to your team.");
+    }
   }
 
   declineStudentToTeam(student) {
@@ -258,6 +257,17 @@ export class TeamsListComponent implements OnInit {
 
     });
   }
+
+  // validateTeam(team) {
+  //   this.teamService.GetTeamList().valueChanges().subscribe(teams => {
+  //     for (let key of Object.keys(teams)) {
+  //       if (teams[key].teamName == team.teamName) {
+  //         return true;
+  //       }
+  //     }
+  //   });
+
+  // }
 
   createNewTeamModal() {
     const config = new TemplateModalConfig<{}, void, void>(this.createJobModal);

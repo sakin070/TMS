@@ -1,57 +1,60 @@
-<form class="ui form" [formGroup]="registerForm">
-  <div class="ui segment">
-    <p><strong>Designation</strong></p>
-    <sui-select class="selection" formControlName="designation" placeholder="Designation">
-      <sui-select-option value="Student"></sui-select-option>
-      <sui-select-option value="Professor"></sui-select-option>
-    </sui-select>
-  </div>
+<div class="ui segment registration-container">
 
-  <div class="field">
-    <label>Student or Professor Number</label>
-    <input type="text" formControlName="id" placeholder="Student/Professor Number">
-  </div>
-
-  <div class="two fields">
-    <div class="field">
-      <label>First Name</label>
-      <input type="text" formControlName="firstName" placeholder="First Name">
+  <form class="ui form" [formGroup]="registerForm">
+    <div class="ui segment">
+      <p><strong>Designation</strong></p>
+      <sui-select class="selection" formControlName="designation" placeholder="Designation">
+        <sui-select-option value="Student"></sui-select-option>
+        <sui-select-option value="Professor"></sui-select-option>
+      </sui-select>
     </div>
+
     <div class="field">
-      <label>Last Name</label>
-      <input type="text" formControlName="lastName" placeholder="Last Name">
+      <label>Student or Professor Number</label>
+      <input type="text" formControlName="id" placeholder="Student/Professor Number">
     </div>
-  </div>
 
-  <div class="field">
-    <label>Email</label>
-    <input type="text" formControlName="email" placeholder="Email">
-  </div>
+    <div class="two fields">
+      <div class="field">
+        <label>First Name</label>
+        <input type="text" formControlName="firstName" placeholder="First Name">
+      </div>
+      <div class="field">
+        <label>Last Name</label>
+        <input type="text" formControlName="lastName" placeholder="Last Name">
+      </div>
+    </div>
 
-  <div class="field">
-    <label>Program of Study</label>
-    <input type="text" formControlName="programOfStudy" placeholder="Program of Study">
-  </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="text" formControlName="email" placeholder="Email">
+    </div>
 
-  <div class="field" style="background: rgb(204, 204, 204);">
-    <label>Courses</label>
-    <li *ngFor="let course of courseList">
+    <div class="field">
+      <label>Program of Study (only for students)</label>
+      <input type="text" formControlName="programOfStudy" placeholder="Program of Study">
+    </div>
+
+    <div class="field">
+      <label>Courses</label>
+      <li *ngFor="let course of courseList">
         {{ course }}
       </li>
-    <form class="ui form" [formGroup]="courseForm">
-        <input type="text" formControlName="courseID" placeholder="Enter Course to Add " style="width: 15%;">
+      <form class="ui form" [formGroup]="courseForm">
+        <input type="text" formControlName="courseID" placeholder="Enter Course to Add " style="width: 40%;">
         <button class="ui button primary" (click)="addCourse(courseForm.value)">Add Course</button>
-    </form>
-    <br>
-  </div>
+      </form>
+      <br>
+    </div>
 
-  <div class="field">
-    <label>Password</label>
-    <input type="password" formControlName="password" placeholder="Password">
-  </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" formControlName="password" placeholder="Password">
+    </div>
+    <div class="centered">
+      <button class="ui button" type="submit" (click)="tryRegister(registerForm.value)">Register</button>
+      <button class="ui red button" type="submit" (click)="goBack()">Cancel</button>
+    </div>
+  </form>
 
-  <div class="field">
-    <sui-checkbox>I agree to the Terms and Conditions</sui-checkbox>
-  </div>
-  <button class="ui button" type="submit" (click)="tryRegister(registerForm.value)">Register</button>
-</form>
+</div>

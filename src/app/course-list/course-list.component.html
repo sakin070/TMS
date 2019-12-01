@@ -77,19 +77,67 @@
       </span>
     </div>
     <div class="ui clearing divider"></div>
-
-    <div *ngFor="let team of teamList" class="ui segment">
-      <div class="ui grid">
-        <div class="four column row">
-          <div class="left floated column">
-            <h3 class="ui header"> {{ team }}</h3>
+    <div *ngIf="teamList.length != 0">
+      <div *ngFor="let team of teamList" class="ui segment">
+        <div class="ui grid">
+          <div class="four column row">
+            <div class="left floated column">
+              <h3 class="ui header"> {{ team.teamName }} ({{ team.teamMembers.length }}/{{ team.maximalNumber }})</h3>
+            </div>
+            <div class="right floated column">
+              <button class="ui right floated button" (click)="openViewTeamModal(team)">
+                View Team
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
+    <div *ngIf="teamList.length == 0">
+      <h3>Student's have not yet created any teams for this course.</h3>
+    </div>
+
   </div>
   <div class="actions">
     <button class="ui red button" (click)="modal.deny()" autofocus>Close</button>
+  </div>
+</ng-template>
+
+<ng-template let-context let-modal="modal" #viewTeamModal>
+  <div class="content">
+    <div class="ui large header" *ngIf="!currentTeam.isComplete">
+      {{currentTeam.teamName}} (Incomplete)
+    </div>
+
+    <div class="ui large header" *ngIf="currentTeam.isComplete">
+      {{currentTeam.teamName}} (Complete)
+    </div>
+
+    <div class="ui clearing divider"></div>
+
+    <div class="ui medium header">Team Info </div>
+
+    <div class="ui small header">Student liaison:</div>
+    <div>
+      {{currentTeam.studentThatIsLiasion}}
+    </div>
+
+    <div class="ui small header">Date of creation:</div>
+    <div>
+      {{currentTeam.dateOfCreation}}
+    </div>
+
+    <div class="ui small header">Team members:
+      ({{ currentTeam.teamMembers.length }}/{{ currentTeam.maximalNumber }})</div>
+    <div>
+      <li *ngFor="let student of currentTeam.teamMembers">
+        {{ student }}
+      </li>
+    </div>
+
+  </div>
+  <div class="actions">
+    <button class="ui red button" (click)="modal.approve()" autofocus>Close</button>
   </div>
 </ng-template>

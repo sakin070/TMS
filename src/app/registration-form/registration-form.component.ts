@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { StudentService } from '../services/student.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registration-form',
@@ -28,7 +29,7 @@ export class RegistrationFormComponent implements OnInit {
     designation: new FormControl(),
   });
 
-  constructor(public authService: AuthService, public studentService: StudentService) {
+  constructor(public authService: AuthService, public studentService: StudentService, public router: Router) {
 
   }
 
@@ -49,14 +50,16 @@ export class RegistrationFormComponent implements OnInit {
 
     this.authService.doRegister(value)
       .then(res => {
-        console.log(res);
         this.errorMessage = '';
         this.successMessage = 'Your account has been created';
         sessionStorage.setItem('user', JSON.stringify(value));
       }, err => {
-        console.log(err);
         this.errorMessage = err.message;
         this.successMessage = '';
       });
+  }
+
+  goBack() {
+    this.router.navigateByUrl("/login")
   }
 }

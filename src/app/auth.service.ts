@@ -63,19 +63,13 @@ export class AuthService {
       this.afAuth.auth.signInWithEmailAndPassword(value.email, value.password).then(res => {
         if (value.designation == "Student") {
           firebase.database().ref('students-list/' + res.user.uid).once('value').then(function (snapshot) {
-            console.log(res);
             if (snapshot.val()) {
-              console.log(snapshot.val());
-              console.log(value);
               resolve(res);          
             }
           }, err => reject(err));
         } else {
           firebase.database().ref('professors-list/' + res.user.uid).once('value').then(function (snapshot) {
-            console.log(res);
             if (snapshot.val()) {
-              console.log(snapshot.val());
-              console.log(value);
               resolve(res);
             }
           }, err => reject(err));
