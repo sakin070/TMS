@@ -78,7 +78,7 @@ export class TeamsListComponent implements OnInit {
       }
     });
 
-    this.viewMyTeam();
+    //this.viewMyTeam();
 
   }
 
@@ -98,7 +98,7 @@ export class TeamsListComponent implements OnInit {
 
     let newTeam = new Team();
     let currentUser = JSON.parse(sessionStorage.getItem('user'));
-  
+
     newTeam.teamName = value.teamName;
     newTeam.minimalNumber = this.course.minimalNumberInTeam;
     newTeam.maximalNumber = this.course.maximalNumberInTeam;
@@ -130,7 +130,7 @@ export class TeamsListComponent implements OnInit {
   joinTeam(team) {
 
     if (!team.isComplete) {
-      let currentUser = JSON.parse(localStorage.getItem('user'));
+      let currentUser = JSON.parse(sessionStorage.getItem('user'));
       let alreadyJoined = false;
       let closedModal = false;
 
@@ -165,7 +165,7 @@ export class TeamsListComponent implements OnInit {
   }
 
   viewMyTeam() {
-    let currentUser = JSON.parse(localStorage.getItem('user'));
+    let currentUser = JSON.parse(sessionStorage.getItem('user'));
     this.currentUserTeam = null;
     let closedModal = false;
     this.currentUserIsLiaison = false;
@@ -178,7 +178,7 @@ export class TeamsListComponent implements OnInit {
       }
 
       if (this.currentUserTeam && !closedModal) {
-        
+
         if (this.currentUserTeam.studentThatIsLiasion == currentUser.id) {
           this.currentUserIsLiaison = true;
         }
@@ -191,6 +191,17 @@ export class TeamsListComponent implements OnInit {
       }
     });
 
+  }
+
+  acceptStudentToTeam(student) {
+    this.currentUserTeam.teamMembers.push(student);
+    this.currentUserTeam.pendingMembers.splice(this.currentUserTeam.pendingMembers.indexOf(student), 1);
+    this.teamService.UpdateTeam(this.currentUserTeam);
+  }
+
+  declineStudentToTeam(student) {
+    this.currentUserTeam.pendingMembers.splice(this.currentUserTeam.pendingMembers.indexOf(student), 1);
+    this.teamService.UpdateTeam(this.currentUserTeam);
   }
 
   openViewTeamModal() {
@@ -225,7 +236,30 @@ export class TeamsListComponent implements OnInit {
       .onDeny(_ => { });
   }
 
-  openProfileModal() {
+  createTeamButton() {
+    let currentUser = JSON.parse(sessionStorage.getItem('user'));
+    let alreadyJoined = false;
+    let closedModal = false;
+
+    this.teamService.GetTeamList().valueChanges().subscribe(teams => {
+      for (let key of Object.keys(teams)) {
+        if (teams[key].teamMembers.indexOf(currentUser.id) >= 0) {
+          alreadyJoined = true;
+        }
+      }
+
+      if (!alreadyJoined && !closedModal) {
+        this.createNewTeamModal();
+        closedModal = true;
+      } else if (alreadyJoined && !closedModal) {
+        this.openGenericModal("You're already part of a team.");
+        closedModal = true;
+      }
+
+    });
+  }
+
+  createNewTeamModal() {
     const config = new TemplateModalConfig<{}, void, void>(this.createJobModal);
     config.isClosable = false;
     config.size = 'small';
@@ -236,7 +270,7 @@ export class TeamsListComponent implements OnInit {
       .open(config)
       .onApprove(value => {
         this.createNewTeam(value);
-        window.location.reload();
+        this.openGenericModal("Your team has been created!");
       })
       .onDeny(_ => { });
   }

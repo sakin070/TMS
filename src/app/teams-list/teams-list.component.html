@@ -30,7 +30,7 @@
       <i class="arrow left icon"></i>
       View other courses
     </button>
-    <button class="ui right floated labeled icon button" (click)="openProfileModal()">
+    <button class="ui right floated labeled icon button" (click)="createTeamButton()">
       Create Team
       <i class="right plus icon"></i>
     </button>
@@ -142,7 +142,7 @@
       ({{ currentUserTeam.teamMembers.length }}/{{ currentUserTeam.maximalNumber }})</div>
     <div>
       <li *ngFor="let student of currentUserTeam.teamMembers">
-        {{ student }}
+        {{ student }} 
       </li>
     </div>
 
@@ -154,7 +154,9 @@
         ({{ currentUserTeam.pendingMembers.length }})</div>
       <div>
         <li *ngFor="let student of currentUserTeam.pendingMembers">
-          {{ student }}
+          {{ student }} 
+          <i class="check icon cursor-hover" style="color: green; margin-left: 4px;" (click)="acceptStudentToTeam(student)"></i>  
+          <i class="x icon cursor-hover" style="color: red;" (click)="declineStudentToTeam(student)"></i> 
         </li>
       </div>
 

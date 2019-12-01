@@ -3,6 +3,7 @@ import {TeamService} from '../services/team.service';
 import {CourseService} from '../services/course.service';
 import {Router} from '@angular/router';
 import {ModalTemplate, SuiModalService, TemplateModalConfig} from 'ng2-semantic-ui';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-course-list',
@@ -17,7 +18,11 @@ export class CourseListComponent implements OnInit {
   @ViewChild('applicantModal')
   public applicantModal: ModalTemplate<{}, void, void>;
 
-  constructor(private modalService: SuiModalService, private courseService:CourseService, private teamService:TeamService, private router: Router) { }
+  constructor(private modalService: SuiModalService, 
+              private courseService:CourseService, 
+              private teamService:TeamService,
+              private router: Router,
+              private authService: AuthService) { }
 
   ngOnInit() {
     this.currentUser = JSON.parse(sessionStorage.getItem('user'));
@@ -49,5 +54,9 @@ export class CourseListComponent implements OnInit {
 
   back() {
     this.router.navigateByUrl("/professor")
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

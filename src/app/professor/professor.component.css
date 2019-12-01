@@ -6,3 +6,15 @@
 .course-button {
   margin-bottom: 20px;
 }
+
+.options {
+  width: 30%;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.option-buttons {
+  margin: 10px;
+  width: 250px;
+}

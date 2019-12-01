@@ -13,19 +13,25 @@
           </button>
         </div>
       </div>
-
-      <div class="four column row">
-        <button class="ui left floated labeled icon button" (click)="courses()">
-          View My Courses
-          <i class="right edit icon"></i>
-        </button>
-
-        <button class="ui  floated labeled icon button" (click)="openProfileModal()">
-          Set Up Team Parameters
-          <i class="right plus icon"></i>
-        </button>
-      </div>
     </div>
+
+  </div>
+</div>
+
+
+<div class="ui container options">
+  <div class="ui segment">
+    <h2>Actions</h2>
+
+    <button class="ui labeled icon button option-buttons" (click)="courses()">
+      View My Courses
+      <i class="right edit icon"></i>
+    </button>
+
+    <button class="ui labeled icon button option-buttons" (click)="openProfileModal()">
+      Set Up Team Parameters
+      <i class="right plus icon"></i>
+    </button>
   </div>
 </div>
 
@@ -33,7 +39,8 @@
   <div class="ui container" id="container-log-in">
     <h1 style="text-align: center; padding-top: 10px;"> You have not been authenticated </h1>
     <div class="ui basic segment">
-      <button type="submit" (click)="routeToLogin()" class="ui fluid button instagram button-login"> click here to login</button>
+      <button type="submit" (click)="routeToLogin()" class="ui fluid button instagram button-login"> click here to
+        login</button>
     </div>
   </div>
 </ng-template>

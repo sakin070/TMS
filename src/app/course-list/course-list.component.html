@@ -27,67 +27,69 @@
 
 <!--</div>-->
 
-<div style="margin-bottom: 0px;" class="ui segment">
-
-<div class="ui grid">
-  <div class="four column row">
-    <div class="left floated column">
-      <h1 style="margin-bottom: 0px;">
-        Your Courses
-      </h1>
+<div class="ui segments">
+  <div class="ui segment">
+    <div class="ui grid" style="margin-bottom: 10px;">
+      <div class="four column row">
+        <div class="left floated column">
+          <h1 style="margin-bottom: 0px;">
+            Your Courses
+          </h1>
+        </div>
+        <div class="right floated column">
+          <button class="ui black right floated button" (click)="logout()">
+            Logout
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="right floated column">
-      <button class="ui right floated primary button left labeled icon" (click)="back()">
-        <i class="arrow left icon"></i>
-        Home
-      </button>
+    <button class="ui left floated primary button left labeled icon" (click)="back()">
+      <i class="arrow left icon"></i>
+      Home
+    </button>
+  </div>
+  <br>
+  <br>
+  <div class="ui segment">
+    <div *ngFor="let course of courseList" class="ui segment" (click)="getTeams(course)">
+      <div class="ui grid">
+        <div class="four column row">
+          <div class="left floated column">
+            <h3 class="ui header">Course ID: {{ course }}</h3>
+          </div>
+          <div class="right floated column">
+            <button class="ui right floated button right labeled icon">
+              <i class="cogs icon"></i>Vizualize Teams
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
+<ng-template let-context let-modal="modal" #applicantModal>
+  <div class="content">
 
-  <br>
-  <br>
-  <div class="ui segment" style="margin-top: 0px;">
-      <div *ngFor="let course of courseList" class="ui segment" (click)="getTeams(course)">
-        <div class="ui grid">
-          <div class="four column row">
-            <div class="left floated column">
-              <h3 class="ui header">Course ID: {{ course }}</h3>
-            </div>
-            <div class="right floated column">
-              <button class="ui right floated button right labeled icon">
-                <i class="right arrow icon"></i>View
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-  </div>
-
-  <ng-template let-context let-modal="modal" #applicantModal>
-    <div class="content">
-
-      <div class="ui large header">
-        Registered Teams
-        <span class="right floated">
+    <div class="ui large header">
+      Registered Teams
+      <span class="right floated">
       </span>
-      </div>
-      <div class="ui clearing divider"></div>
+    </div>
+    <div class="ui clearing divider"></div>
 
-      <div *ngFor="let team of teamList" class="ui segment">
-        <div class="ui grid">
-          <div class="four column row">
-            <div class="left floated column">
-              <h3 class="ui header"> {{ team }}</h3>
-            </div>
+    <div *ngFor="let team of teamList" class="ui segment">
+      <div class="ui grid">
+        <div class="four column row">
+          <div class="left floated column">
+            <h3 class="ui header"> {{ team }}</h3>
           </div>
         </div>
       </div>
+    </div>
 
-    </div>
-    <div class="actions">
-      <button class="ui red button" (click)="modal.deny()" autofocus>Close</button>
-    </div>
-  </ng-template>
-</div>
+  </div>
+  <div class="actions">
+    <button class="ui red button" (click)="modal.deny()" autofocus>Close</button>
+  </div>
+</ng-template>
