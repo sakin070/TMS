@@ -21,7 +21,6 @@ export class AuthService {
     return new Promise<any>((resolve, reject) => {
       this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password)
         .then(res => {
-          console.log(value);
           resolve(res);
 
           if (value.designation == "Student") {
@@ -50,6 +49,7 @@ export class AuthService {
               .then(save => {
                 resolve(save);
                 this.doLogin(value);
+                this.router.navigateByUrl('/professor')
               },
                 err2 => reject(err2));
           }

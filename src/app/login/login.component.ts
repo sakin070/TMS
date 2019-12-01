@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
         this.errorMessage = "";
         this.successMessage = "Your account has been created";
         let id = this.authService.getCurrentUser().uid;
-        if(value.designation === 'student'){
+        if(value.designation == 'Student'){
           let user = this.studentService.GetStudent(id).valueChanges().subscribe(user => {
             sessionStorage.setItem('user', JSON.stringify(user));
             console.log(user);

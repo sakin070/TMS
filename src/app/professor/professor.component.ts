@@ -51,6 +51,11 @@ export class ProfessorComponent implements OnInit {
     course.minimalNumberInTeam = value.minimalNumberInTeam;
     course.maximalNumberInTeam = value.maximalNumberInTeam;
     this.courseService.AddCourse(course);
+    
+    if (!this.currentUser.courseList) {
+      this.currentUser.courseList = [];
+    }
+    
     this.currentUser.courseList.push(course.id);
     this.courseList  = this.currentUser.courseList
     sessionStorage.setItem('user', JSON.stringify(this.currentUser));
