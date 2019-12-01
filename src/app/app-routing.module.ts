@@ -11,6 +11,7 @@ import {CourseListComponent} from './course-list/course-list.component';
 const routes: Routes = [
   {path: 'register', component: RegistrationFormComponent},
   {path: 'login', component: LoginComponent},
+  {path: '', component: LoginComponent},
   {path: 'student', component: StudentComponent},
   {path: 'teams', component: TeamsListComponent},
   {path: 'professor', component: ProfessorComponent},
